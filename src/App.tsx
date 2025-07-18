@@ -39,9 +39,6 @@ function App() {
 
 
 
-  
-
-
   const generateAIResponse = async(prompt: string, mode: 'brainstorm' | 'summarize' | 'transform') => {
 
     const ai = new GoogleGenAI({
@@ -50,7 +47,7 @@ function App() {
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: mode + " " + prompt,
+      contents: `You are FocusFlow, an AI assistant designed to help writers, educators, and designers brainstorm, summarize content, and rewrite text in creative tones.\n\nYour job is to understand the user's message and reply accordingly based on their intent.\n\n- If the input is a question or idea, help expand it into structured suggestions.\n- If the input is content, you may be asked to summarize or rewrite it in a specific tone.\n\nAlways return a helpful, structured, and positive response.\n\nInput: ${prompt}\nTask: ${mode === 'brainstorm' ? 'Brainstorm ideas' : mode === 'summarize' ? 'Summarize the content' : 'Rewrite the content in a creative tone'}`,
     });
 
     return response.text || "No response from AI.";
@@ -85,6 +82,10 @@ function App() {
     navigator.clipboard.writeText(content);
   };
 
+  const handleClearMessages = () => {
+    setMessages([]);
+  };
+
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 transition-all duration-500 ease-ios">
@@ -110,6 +111,7 @@ function App() {
                 messages={messages}
                 isLoading={isLoading}
                 onCopyMessage={handleCopyMessage}
+                onClearMessages={handleClearMessages}
               />
             </div>
           </div>
