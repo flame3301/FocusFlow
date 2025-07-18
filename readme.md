@@ -22,7 +22,7 @@ FocusFlow is a lightweight AI productivity assistant that helps creators brainst
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/focusflow.git
+   git clone https://github.com/flame3301/focusflow.git
    cd focusflow
    ```
 
