@@ -45,7 +45,7 @@ function App() {
   const generateAIResponse = async(prompt: string, mode: 'brainstorm' | 'summarize' | 'transform') => {
 
     const ai = new GoogleGenAI({
-      apiKey: "AIzaSyBLSaLUDjj000A5oaHaKGkDWa3c4xqOsxg", // Replace with your actual API key
+      apiKey: "AIzaSyBLSaLUDjj000A5oaHaKGkDWa3c4xqOsxg",
     });
 
     const response = await ai.models.generateContent({

@@ -1,6 +1,18 @@
 import React from 'react';
 import { Copy, Check, Sparkles, Clock } from 'lucide-react';
 
+
+const parseMarkdown = (text: string) => {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      const boldText = part.slice(2, -2);
+      return <strong key={index} className="font-semibold text-gray-900 dark:text-white">{boldText}</strong>;
+    }
+    return part;
+  });
+};
+
 interface Message {
   id: string;
   content: string;
@@ -81,9 +93,9 @@ const ResponsePanel: React.FC<ResponsePanelProps> = ({ messages, isLoading, onCo
                   </div>
                 </div>
                 <div className="prose prose-sm max-w-none dark:prose-invert">
-                  <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
-                    {message.content}
-                  </p>
+                  <div className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
+                    {parseMarkdown(message.content)}
+                  </div>
                 </div>
               </div>
             ))}
