@@ -4,6 +4,8 @@ import Header from './components/header';
 import ChatPanel from './components/chatPanel';
 import ResponsePanel from './components/responsePanel';
 
+import { GoogleGenAI } from "@google/genai";
+
 interface Message {
   id: string;
   content: string;
@@ -22,8 +24,8 @@ function App() {
     // Simulate AI response delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    const response = generateAIResponse(message, currentMode);
-    
+    const response = await generateAIResponse(message, currentMode);
+      
     const newMessage: Message = {
       id: Date.now().toString(),
       content: response,
@@ -35,25 +37,25 @@ function App() {
     setIsLoading(false);
   };
 
-  const generateAIResponse = (input: string, mode: 'brainstorm' | 'summarize' | 'transform'): string => {
-    const responses = {
-      brainstorm: [
-        `Great topic! Here are some creative ideas based on "${input.substring(0, 50)}...":\n\n• Explore different angles and perspectives\n• Consider your target audience's needs\n• Think about current trends and how they apply\n• Look for unexpected connections\n• Consider the "what if" scenarios\n\nWould you like me to dive deeper into any of these directions?`,
-        `I love the direction you're heading with "${input.substring(0, 50)}..."! Here are some fresh ideas:\n\n• Break down the core concept into smaller, actionable pieces\n• Consider the opposite approach - what would that look like?\n• Think about cross-industry applications\n• Explore the emotional aspects\n• Consider time-based variations (short-term vs long-term)\n\nWhich of these resonates most with your vision?`
-      ],
-      summarize: [
-        `Here's a concise summary of your content:\n\n**Key Points:**\n• Main theme: ${input.substring(0, 30)}...\n• Core message focuses on practical applications\n• Important details that support the main argument\n• Actionable insights for implementation\n\n**Takeaway:** The content emphasizes the importance of structured thinking and provides a clear framework for moving forward.`,
-        `**Summary:**\n\nYour text covers several important aspects:\n\n• **Main Focus:** ${input.substring(0, 40)}...\n• **Supporting Evidence:** Well-structured arguments with clear examples\n• **Practical Applications:** Real-world implications and next steps\n• **Key Insight:** The importance of maintaining focus while exploring new possibilities\n\nThis provides a solid foundation for further development.`
-      ],
-      transform: [
-        `Here's your content transformed into a more engaging format:\n\n**Original concept enhanced:**\n\n${input.substring(0, 100)}...\n\n**Transformed version:**\n\nImagine a world where your ideas flow effortlessly from thought to reality. This approach takes your core concept and elevates it with:\n\n• Dynamic storytelling elements\n• Emotional resonance\n• Clear call-to-action\n• Professional polish\n\nWould you like me to adjust the tone or style further?`,
-        `I've transformed your content with a fresh perspective:\n\n**Enhanced Version:**\n\nBuilding on your foundation of "${input.substring(0, 50)}...", here's a more compelling presentation:\n\n• **Hook:** Immediate engagement with your audience\n• **Value Proposition:** Clear benefits and outcomes\n• **Evidence:** Supporting details that build credibility\n• **Action Steps:** Concrete next steps for implementation\n\nThis version maintains your core message while making it more impactful and actionable.`
-      ]
-    };
 
-    const modeResponses = responses[mode];
-    return modeResponses[Math.floor(Math.random() * modeResponses.length)];
-  };
+
+  
+
+
+  const generateAIResponse = async(prompt: string, mode: 'brainstorm' | 'summarize' | 'transform') => {
+
+    const ai = new GoogleGenAI({
+      apiKey: "AIzaSyBLSaLUDjj000A5oaHaKGkDWa3c4xqOsxg", // Replace with your actual API key
+    });
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: mode + " " + prompt,
+    });
+
+    return response.text || "No response from AI.";
+
+  }
 
   const handleSave = () => {
     const dataToSave = {
