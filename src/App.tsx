@@ -5,6 +5,7 @@ import ChatPanel from './components/chatPanel';
 import ResponsePanel from './components/responsePanel';
 
 import { GoogleGenAI } from "@google/genai";
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 interface Message {
   id: string;
@@ -117,6 +118,7 @@ function App() {
           </div>
         </main>
       </div>
+      <SpeedInsights/>
     </ThemeProvider>
   );
 }
