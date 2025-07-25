@@ -7,6 +7,7 @@ import ResponsePanel from './components/responsePanel';
 import { GoogleGenAI } from "@google/genai";
 import { SpeedInsights } from "@vercel/speed-insights/react"
 
+
 interface Message {
   id: string;
   content: string;
@@ -43,7 +44,7 @@ function App() {
   const generateAIResponse = async(prompt: string, mode: 'brainstorm' | 'summarize' | 'transform') => {
 
     const ai = new GoogleGenAI({
-      apiKey: "AIzaSyBLSaLUDjj000A5oaHaKGkDWa3c4xqOsxg",
+      apiKey: import.meta.env.GEMINI_API_KEY,
     });
 
     const response = await ai.models.generateContent({
